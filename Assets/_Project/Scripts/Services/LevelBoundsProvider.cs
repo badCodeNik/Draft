@@ -6,6 +6,7 @@ namespace _Project.Scripts.Services
     public class LevelBoundsProvider : MonoBehaviour, ILevelBoundsProvider
     {
         [SerializeField] private GameObject _floor;
+        [SerializeField] private Collider _collider;
         private RngService _rngService;
         private Bounds _bounds;
 
@@ -13,11 +14,11 @@ namespace _Project.Scripts.Services
         public void Construct(RngService rngService)
         {
             _rngService = rngService;
+            _bounds = _collider.bounds;
         }
 
         public Bounds GetFloorBounds()
         {
-            _bounds = _floor.GetComponent<Renderer>().bounds;
             return _bounds;
         }
 
@@ -30,7 +31,7 @@ namespace _Project.Scripts.Services
         {
             var x = _rngService.GetRandomFloat(_bounds.min.x, _bounds.max.x);
             var z = _rngService.GetRandomFloat(_bounds.min.z, _bounds.max.z);
-            return new Vector3(x, _bounds.min.y, z);
+            return new Vector3(x, _bounds.max.y, z);
         }
     }
 }
